@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Canvastools</title>
+  <style>
+    canvas {
+      position: relative;
+      border: 1px solid #000;
+    }
+  </style>
+  <script src="./canvastools.js"></script>
+  <script>
+    window.onload = function() {
+      canvaselement = document.getElementById('my-canvas');
+      canvastools.droppable(canvaselement);
+      canvastools.onMouseMove(canvaselement, function (canvaselement, x, y, color) {
+        colorstr = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
+        document.getElementById('color').style.color = colorstr;
+        document.getElementById('color').innerHTML = colorstr;
+        evt.preventDefault();
+      })
+    }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+      <h1>Canvas</h1>
+    </header>
+    <div>
+      <canvas id="my-canvas" width="600" height="600">I am canvas</canvas>
+      <p><b>Color: </b><i id="color"></i></p>
+      <button onclick="canvastools.toBase64(document.getElementById('my-canvas'));">save</button>
+    </div>
+  </div>
+</body>
+</html>
