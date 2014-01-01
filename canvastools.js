@@ -1,13 +1,13 @@
 /*
-* canvastools.js
-*
-* Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
-* Released under the MIT Licence
-* http://simon.waldherr.eu/license/mit/
-*
-* Github:  https://github.com/simonwaldherr/canvastools/
-* Version: 0.1.0
-*/
+ * canvastools.js
+ *
+ * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+ * Released under the MIT Licence
+ * http://simon.waldherr.eu/license/mit/
+ *
+ * Github:  https://github.com/simonwaldherr/canvastools.js/
+ * Version: 0.1.0
+ */
 
 /*jslint browser: true, indent: 2 */
 /*global FileReader */

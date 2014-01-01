@@ -12,7 +12,7 @@
   <script src="./canvastools.js"></script>
   <script>
     window.onload = function() {
-      canvaselement = document.getElementById('my-canvas');
+      canvaselement = document.getElementById('mycanvas');
       canvastools.droppable(canvaselement);
       canvastools.onMouseMove(canvaselement, function (canvaselement, x, y, color) {
         colorstr = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
@@ -24,12 +24,12 @@
   </script>
 </head>
 <body>
-  <div id="container">
+  <div>
     <header id="header">
       <h1>Canvas</h1>
     </header>
     <div>
-      <canvas id="my-canvas" width="600" height="600">I am canvas</canvas>
+      <canvas id="mycanvas" width="600" height="600">this is a canvas</canvas>
       <p><b>Color: </b><i id="color"></i></p>
       <button onclick="canvastools.toBase64(document.getElementById('my-canvas'));">save</button>
     </div>
