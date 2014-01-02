@@ -18,8 +18,8 @@
         colorstr = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
         document.getElementById('color').style.color = colorstr;
         document.getElementById('color').innerHTML = colorstr;
-        evt.preventDefault();
-      })
+      });
+      canvastools.draw(canvaselement);
     }
   </script>
 </head>
