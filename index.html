@@ -27,6 +27,11 @@
       });
       canvastools.draw(canvaselement);
     }
+    function reloadImg(canvaselement) {
+      var context = canvaselement.getContext('2d');
+      canvastools.clearCanvas(canvaselement);
+      context.drawImage(canvastools.img, 0, 0);
+    }
     function imgGrey(color) {
       return [color[0],color[0],color[0],255];
     }
@@ -49,6 +54,12 @@
       var ired = Math.max(0, 255 - color[0]);
       return [color[0] - ired / 1.5, color[1] - ired * 1.5, color[2] - ired * 1.5, 255];
     }
+    function freckles(color) {
+      function rand() {
+        return Math.random() * (25 - -25 + 1) + -25;
+      }
+      return [color[0] + rand(), color[1] + rand(), color[2] + rand(), 255];
+    }
   </script>
 </head>
 <body>
@@ -59,12 +70,14 @@
     <div>
       <canvas id="mycanvas" width="600" height="600">this is a canvas</canvas>
       <p><b>Color: </b><i id="color"></i></p><p><b>Filter: </b>
+      <button onclick="reloadImg(canvaselement);">reload</button>
       <button onclick="canvastools.toBase64(canvaselement);">save</button>
       <button onclick="canvastools.forEachPixel(canvaselement, imgGrey);">grey</button>
       <button onclick="canvastools.forEachPixel(canvaselement, imgBW);">b/w</button>
       <button onclick="canvastools.forEachPixel(canvaselement, imgInverse);">invert</button>
       <button onclick="canvastools.forEachPixel(canvaselement, imgSingleColor);">1color</button>
       <button onclick="canvastools.forEachPixel(canvaselement, red);">redify</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, freckles);">freckles</button>
       </p>
     </div>
   </div>

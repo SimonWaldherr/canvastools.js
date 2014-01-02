@@ -20,6 +20,7 @@ var canvastools = {
     g: 255,
     b: 255
   },
+  img: false,
   droppable: function (canvaselement) {
     'use strict';
     var context = canvaselement.getContext('2d'),
@@ -29,6 +30,7 @@ var canvastools = {
 
     img.addEventListener('load', function () {
       canvastools.clearCanvas(canvaselement);
+      canvastools.img = img;
       context.drawImage(img, 0, 0);
     }, false);
 
