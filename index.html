@@ -11,15 +11,43 @@
   </style>
   <script src="./canvastools.js"></script>
   <script>
+    var canvaselement, colorstr;
     window.onload = function() {
       canvaselement = document.getElementById('mycanvas');
       canvastools.droppable(canvaselement);
       canvastools.onMouseMove(canvaselement, function (canvaselement, x, y, color) {
         colorstr = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
+        canvastools.drawColor = {
+          r: color.r,
+          g: color.g,
+          b: color.b
+        };
         document.getElementById('color').style.color = colorstr;
         document.getElementById('color').innerHTML = colorstr;
       });
       canvastools.draw(canvaselement);
+    }
+    function imgGrey(color) {
+      return [color[0],color[0],color[0],255];
+    }
+    function imgBW(color) {
+      if ((color[0] + color[1] + color[2] + color[3]) > 510) {
+        return [255, 255, 255, 255];
+      }
+      return [0, 0, 0, 255];
+    }
+    function imgInverse(color) {
+      return [255 - color[0], 255 - color[1], 255 - color[2], 255];
+    }
+    function imgSingleColor(color) {
+      if (color[0] > 100) {
+        return color;
+      }
+      return [color[0], color[0], color[0], 255];
+    }
+    function red(color) {
+      var ired = Math.max(0, 255 - color[0]);
+      return [color[0] - ired / 1.5, color[1] - ired * 1.5, color[2] - ired * 1.5, 255];
     }
   </script>
 </head>
@@ -30,8 +58,14 @@
     </header>
     <div>
       <canvas id="mycanvas" width="600" height="600">this is a canvas</canvas>
-      <p><b>Color: </b><i id="color"></i></p>
-      <button onclick="canvastools.toBase64(document.getElementById('my-canvas'));">save</button>
+      <p><b>Color: </b><i id="color"></i></p><p><b>Filter: </b>
+      <button onclick="canvastools.toBase64(canvaselement);">save</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, imgGrey);">grey</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, imgBW);">b/w</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, imgInverse);">invert</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, imgSingleColor);">1color</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, red);">redify</button>
+      </p>
     </div>
   </div>
 </body>

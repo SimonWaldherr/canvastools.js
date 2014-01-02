@@ -86,6 +86,24 @@ var canvastools = {
       callback(canvaselement, evt.clientX - rect.left, evt.clientY - rect.top, color);
     }, false);
   },
+  forEachPixel: function (canvaselement, callback) {
+    'use strict';
+    var i,
+      newPixels = [],
+      context = canvaselement.getContext('2d'),
+      imageData = context.getImageData(0, 0, canvaselement.width, canvaselement.height),
+      pixels = imageData.data,
+      numPixels = imageData.width * imageData.height;
+    for (i = 0; i < numPixels; i += 1) {
+      newPixels = callback([pixels[i * 4], pixels[i * 4 + 1], pixels[i * 4 + 2], pixels[i * 4 + 3]]);
+      pixels[i * 4] = newPixels[0];
+      pixels[i * 4 + 1] = newPixels[1];
+      pixels[i * 4 + 2] = newPixels[2];
+      pixels[i * 4 + 3] = newPixels[3];
+    }
+    context.clearRect(0, 0, canvaselement.width, canvaselement.height);
+    context.putImageData(imageData, 0, 0);
+  },
   draw: function (canvaselement) {
     'use strict';
     canvaselement.addEventListener('mousedown', function (evt) {
