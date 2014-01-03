@@ -8,6 +8,16 @@
       position: relative;
       border: 1px solid #000;
     }
+    div.box {
+      position: relative;
+      height: 10px;
+      width: 10px;
+      display: inline-block;
+      border: 1px #000 solid;
+    }
+    #color {
+      text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
+    }
   </style>
   <script src="./canvastools.js"></script>
   <script>
@@ -33,32 +43,81 @@
       context.drawImage(canvastools.img, 0, 0);
     }
     function imgGrey(color) {
-      return [color[0],color[0],color[0],255];
+      return [color.r,color.r,color.r,color.a];
     }
     function imgBW(color) {
-      if ((color[0] + color[1] + color[2] + color[3]) > 510) {
+      if ((color.r + color.g + color.b + color.a) > 510) {
         return [255, 255, 255, 255];
       }
       return [0, 0, 0, 255];
     }
     function imgInverse(color) {
-      return [255 - color[0], 255 - color[1], 255 - color[2], 255];
+      return [255 - color.r, 255 - color.g, 255 - color.b, color.a];
     }
     function imgSingleColor(color) {
-      if (color[0] > 100) {
+      if (color.r > 100) {
         return color;
       }
-      return [color[0], color[0], color[0], 255];
+      return [color.r, color.r, color.r, color.a];
     }
     function red(color) {
-      var ired = Math.max(0, 255 - color[0]);
-      return [color[0] - ired / 1.5, color[1] - ired * 1.5, color[2] - ired * 1.5, 255];
+      var ired = Math.max(0, 255 - color.r);
+      return [color.r - ired / 1.5, color.g - ired * 1.5, color.b - ired * 1.5, color.a];
     }
     function freckles(color) {
       function rand() {
         return Math.random() * (25 - -25 + 1) + -25;
       }
-      return [color[0] + rand(), color[1] + rand(), color[2] + rand(), 255];
+      return [color.r + rand(), color.g + rand(), color.b + rand(), color.a];
+    }
+    function lighten(color) {
+      return [Math.min(255, color.r * 1.2 + 10), Math.min(255, color.g * 1.2 + 10), Math.min(255, color.b * 1.2 + 10), color.a];
+    }
+    function darken(color) {
+      return [Math.min(255, color.r * 0.8 - 10), Math.min(255, color.g * 0.8 - 10), Math.min(255, color.b * 0.8 - 10), color.a];
+    }
+    function contrast0(color) {
+      var r, g, b;
+      if (color.r < 128) {
+        r = Math.min(255, color.r * 0.95);
+      } else {
+        r = Math.min(255, color.r * 1.05);
+      }
+      if (color.g < 128) {
+        g = Math.min(255, color.g * 0.95);
+      } else {
+        g = Math.min(255, color.g * 1.05);
+      }
+      if (color.b < 128) {
+        b = Math.min(255, color.b * 0.95);
+      } else {
+        b = Math.min(255, color.b * 1.05);
+      }
+      return [r, g, b, color.a];
+    }
+    function contrast1(color) {
+      var r, g, b, h;
+      h = 1 + (color.r - 128) / 2500;
+      r = color.r * h;
+      h = 1 + (color.r - 128) / 2500;
+      g = color.g * h;
+      h = 1 + (color.r - 128) / 2500;
+      b = color.b * h;
+      return [r, g, b, color.a];
+    }
+    function contrast2(color) {
+      if ((color.r + color.g + color.b) < 383) {
+        return darken(color);
+      }
+      return lighten(color);
+    }
+    function stats() {
+      var i = 0, str = '<b>Colors: </b>';
+      sortable = canvastools.stats(canvaselement);
+      for (i = 0; i < 20; i += 1) {
+        str += '<div class="box" style="background:rgb(' + sortable[i][0].split('_')[0] + ', ' + sortable[i][0].split('_')[1] + ', ' + sortable[i][0].split('_')[2] + ')"></div>';
+      }
+      document.getElementById('colors').innerHTML = str + '</div>';
     }
   </script>
 </head>
@@ -69,7 +128,9 @@
     </header>
     <div>
       <canvas id="mycanvas" width="600" height="600">this is a canvas</canvas>
-      <p><b>Color: </b><i id="color"></i></p><p><b>Filter: </b>
+      <p><b>Color: </b><i id="color"></i></p>
+      <p id="colors"></p>
+      <p><b>Filter: </b>
       <button onclick="reloadImg(canvaselement);">reload</button>
       <button onclick="canvastools.toBase64(canvaselement);">save</button>
       <button onclick="canvastools.forEachPixel(canvaselement, imgGrey);">grey</button>
@@ -78,6 +139,12 @@
       <button onclick="canvastools.forEachPixel(canvaselement, imgSingleColor);">1color</button>
       <button onclick="canvastools.forEachPixel(canvaselement, red);">redify</button>
       <button onclick="canvastools.forEachPixel(canvaselement, freckles);">freckles</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, lighten);">lighten</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, darken);">darken</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, contrast0);">contrast0</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, contrast1);">contrast1</button>
+      <button onclick="canvastools.forEachPixel(canvaselement, contrast2);">contrast2</button>
+      <button onclick="stats();">stats</button>
       </p>
     </div>
   </div>

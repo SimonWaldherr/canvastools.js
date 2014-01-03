@@ -1,12 +1,12 @@
 /*
  * canvastools.js
  *
- * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+ * Copyright 2014, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/simonwaldherr/canvastools.js/
- * Version: 0.1.1
+ * Version: 0.1.2
  */
 
 /*jslint browser: true, indent: 2 */
@@ -91,17 +91,25 @@ var canvastools = {
   forEachPixel: function (canvaselement, callback) {
     'use strict';
     var i,
+      x = 1,
+      y = 1,
       newPixels = [],
       context = canvaselement.getContext('2d'),
       imageData = context.getImageData(0, 0, canvaselement.width, canvaselement.height),
       pixels = imageData.data,
       numPixels = imageData.width * imageData.height;
     for (i = 0; i < numPixels; i += 1) {
-      newPixels = callback([pixels[i * 4], pixels[i * 4 + 1], pixels[i * 4 + 2], pixels[i * 4 + 3]]);
+      newPixels = callback({r: pixels[i * 4], g: pixels[i * 4 + 1], b: pixels[i * 4 + 2], a: pixels[i * 4 + 3], x: x, y: y});
       pixels[i * 4] = newPixels[0];
       pixels[i * 4 + 1] = newPixels[1];
       pixels[i * 4 + 2] = newPixels[2];
       pixels[i * 4 + 3] = newPixels[3];
+      if (x > imageData.width) {
+        x = 1;
+        y += 1;
+      } else {
+        x += 1;
+      }
     }
     context.clearRect(0, 0, canvaselement.width, canvaselement.height);
     context.putImageData(imageData, 0, 0);
@@ -127,5 +135,27 @@ var canvastools = {
         context.stroke();
       }
     }, false);
+  },
+  stats: function (canvaselement) {
+    'use strict';
+    var stats = {}, id, sortable = [], color;
+    canvastools.forEachPixel(canvaselement, function (color) {
+      id = color.r + '_' + color.g + '_' + color.b;
+      if (stats[id] !== undefined) {
+        stats[id] += 1;
+      } else {
+        stats[id] = 1;
+      }
+      return [color.r, color.g, color.b, color.a];
+    });
+    for (color in stats) {
+      if (stats[color] !== undefined) {
+        sortable.push([color, stats[color]]);
+      }
+    }
+    sortable.sort(function (a, b) {
+      return b[1] - a[1];
+    });
+    return sortable;
   }
 };

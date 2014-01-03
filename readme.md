@@ -5,8 +5,8 @@ JavaScript functions to play with html5 canvas under the **MIT-License**
 ##about
 
 License:   MIT  
-Version: 0.1.1  
-Date:  12.2013  
+Version: 0.1.2  
+Date:  01.2014  
 
 ##howto
 
