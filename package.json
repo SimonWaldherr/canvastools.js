@@ -1,0 +1,33 @@
+{
+  "name": "canvastools",
+  "title": "canvastools",
+  "description": "JavaScript functions to play with html5 canvas under the MIT-License",
+  "version": "0.1.2",
+  "homepage": "https://github.com/SimonWaldherr/canvastools.js",
+  "author": {
+    "name": "Simon Waldherr",
+    "email": "contact@simonwaldherr.de",
+    "url": "http://simon.waldherr.eu/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimonWaldherr/canvastools.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SimonWaldherr/canvastools.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://simon.waldherr.eu/license/mit/"
+    }
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [
+    "canvas",
+    "image",
+    "editing",
+    "html5"
+  ]
+}
